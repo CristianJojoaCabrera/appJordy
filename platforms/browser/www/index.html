@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="lib/framework7/css/framework7.ios.colors.min.css">
 
     <link rel="stylesheet" href="css/styles.css">
+
     <style>
         .card{
             border-radius: 11px;
@@ -49,7 +50,9 @@
             background-color: #ff6900;
             color: white;
         }
-
+        .modal-button{
+            color: #ff6900;
+        }
     </style>
 </head>
 
@@ -73,17 +76,16 @@
         <!-- Top Navbar-->
         <div class="navbar">
             <div class="navbar-inner">
+                <div class="left"></div>
                 <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
                 <div class="center sliding">Catalogo Productos</div>
                 <br>
-
-
                 <div class="right">
                     <!--
                       Right link contains only icon - additional "icon-only" class
                       Additional "open-panel" class tells app to open panel when we click on this link
                     -->
-                    <a href="#" class="link icon-only open-panel"><i class="icon icon-bars"></i></a>
+                    <a href="shoppingCard.html">  <i class="f7-icons" style="color: white">cart</i></a>
                 </div>
             </div>
         </div>
@@ -98,94 +100,6 @@
                 <div class="page-content">
                     <div class="content-block">
                         <div class="content-block-title">Lista productos disponibles</div>
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-content-inner">
-                                    <p style="color: black; font-size: 16px;">
-                                        Producto n 1
-                                    </p>
-                                    TOALLA P/MANOS NATURAL Z TH/ FAJO X 1500 UN REF.73547 FAMILIA
-                                    <div class="list-block">
-                                        <br>
-                                        <ul>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title" style="color: black">$4.138.00</div>
-                                                    <div class="item-after"><a href="#" class="button active agregar" data-producto="1">Agregar
-                                                        Producto</a></div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-content-inner">
-                                    <p style="color: black; font-size: 16px;">
-                                        Producto n 2
-                                    </p>
-                                    TOALLA P/MANOS NATURAL Z TH/ FAJO X 1500 UN REF.73547 FAMILIA
-                                    <div class="list-block">
-                                        <br>
-                                        <ul>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title" style="color: black">$4.138.00</div>
-                                                    <div class="item-after"><a href="#" class="button active agregar" data-producto="2">Agregar
-                                                        Producto</a></div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-content-inner">
-                                    <p style="color: black; font-size: 16px;">
-                                        Producto n 1
-                                    </p>
-                                    TOALLA P/MANOS NATURAL Z TH/ FAJO X 1500 UN REF.73547 FAMILIA
-                                    <div class="list-block">
-                                        <br>
-                                        <ul>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title" style="color: black">$4.138.00</div>
-                                                    <div class="item-after"><a href="#" class="button active">Agregar
-                                                        Producto</a></div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-content-inner">
-                                    <p style="color: black; font-size: 16px;">
-                                        Producto n 1
-                                    </p>
-                                    TOALLA P/MANOS NATURAL Z TH/ FAJO X 1500 UN REF.73547 FAMILIA
-                                    <div class="list-block">
-                                        <br>
-                                        <ul>
-                                            <li class="item-content">
-                                                <div class="item-inner">
-                                                    <div class="item-title" style="color: black">$4.138.00</div>
-                                                    <div class="item-after"><a href="#" class="button active">Agregar
-                                                        Producto</a></div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

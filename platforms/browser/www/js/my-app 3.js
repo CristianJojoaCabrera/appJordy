@@ -381,7 +381,16 @@ myApp.onPageInit('shoppingCard', function (page) {
             text: ``,
             afterText:  '<div class="item-input">\n' +
                 '            <input size="35" type="email" id="correo" placeholder="E-mail">\n' +
-                '          </div>',
+                '          </div>' +
+                '<div class="item-content">\n' +
+                '        <div class="item-media"><i class="icon f7-icons">email</i></div>\n' +
+                '        <div class="item-inner">\n' +
+                '          <div class="item-title label">E-mail</div>\n' +
+                '          <div class="item-input">\n' +
+                '            <input type="email" placeholder="E-mail">\n' +
+                '          </div>\n' +
+                '        </div>\n' +
+                '      </div>',
             buttons: [
                 {
                     text: 'Aceptar',
