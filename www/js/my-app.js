@@ -437,19 +437,35 @@ myApp.onPageInit('emailForm', function (page) {
         });
         $$.post('https://www.estrategicacomunicaciones.com/mobile/php/send_mail.php', {
             'productos':dataEmail,
-            'correo':ciudad,
+            'correo':nombre,
         }, function(response) {
+            console.log(response);
             myApp.hidePreloader();
-            myApp.modal({
-                title: 'Se ha notificado el pedido',
-                text: `Se ha enviado un correo`,
-                buttons: [
-                    {
-                        text: 'Ok'
+            if(response == 'true'){
+                myApp.modal({
+                    title: 'Se ha notificado el pedido',
+                    text: `Se ha enviado un correo`,
+                    buttons: [
+                        {
+                            text: 'Ok'
 
-                    }
-                ]
-            })
+                        }
+                    ]
+                })
+            }else{
+                myApp.modal({
+                    title: 'No e ha notificado el pedido',
+                    text: `No se ha enviado un correo, verique los datos ingresados`,
+                    buttons: [
+                        {
+                            text: 'Ok'
+
+                        }
+                    ]
+                })
+            }
+
+
         }, 'json');
     })
 
