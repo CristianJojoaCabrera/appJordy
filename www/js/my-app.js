@@ -1,5 +1,11 @@
 // Initialize app
-var myApp = new Framework7();
+var myApp = new Framework7({
+    lazy: {
+        threshold: 50,
+        sequential: false,
+    },
+});
+
 var objectProductos = [{
     codigo: 10000016,
     id: 1,
@@ -262,37 +268,35 @@ var mainView = myApp.addView('.view-main', {
     // Because we want to use dynamic navbar, we need to enable it for this view:
     dynamicNavbar: true
 });
-
+/*var mySearchbar = myApp.searchbar('.searchbar', {
+    searchList: '.list-block-search',
+    searchIn: '.item-title'
+})*/
 // Handle Cordova Device Ready Event
 $$(document).on('deviceready', function () {
+
     $$.each(objectProductos, function (key, value) {
-        console.log(key, value);
-        let productoCard = `<div class="card">
+        let productoCard = `<li><div class="card">
                             <div class="card-content">
-                                <div class="card-content-inner">
+                                <div class="card-content-inner item-title">
                                     <p style="color: black; font-size: 16px;">
                                         Codigo: ${value.codigo}
                                     </p>
                                     ${value.descripcion}
-                                    <div class="list-block">
-                                        <br>
-                                        <ul>
-                                            <li class="item-content">
-                                                <div class="item-inner">
+                                     <div class="item-inner">
                                                     <div class="item-title" style="color: black">Costo: ${value.valor}</div>
                                                     <div class="item-after"><a href="#" class="button active agregar" data-producto=${value.codigo}>Agregar
                                                         Producto</a></div>
                                                 </div>
-                                            </li>
-                                        </ul>
-                                    </div>
+                               
                                 </div>
                             </div>
-                        </div>`;
+                        </div></li>`;
 
-        $$(".content-block").append(productoCard);
+        $$("#lista").append(productoCard);
 
     });
+    $$("#lista").append('<br>');
     $$('.agregar').on('click', function () {
         let codigoProducto = parseInt($$(this).data('producto'));
         myApp.modal({
@@ -330,8 +334,8 @@ myApp.onPageInit('shoppingCard', function (page) {
     // Do something here for "about" page
     //myApp.alert('codigo para chopping');
     $$.each(objectProductosShopping, function (key, value) {
-        console.log(key, value);
-        let productoCard = `<div class="card">
+        //console.log(key, value);
+        let productoCard = `<div class="card" id="${value.codigo}">
                             <div class="card-content">
                                 <div class="card-content-inner">
                                     <p style="color: black; font-size: 16px;">
@@ -352,7 +356,7 @@ myApp.onPageInit('shoppingCard', function (page) {
                                                   
                                                       <a  class="tab-link button more" data-codigo="${value.codigo}" style="text-overflow: clip; color: black"">+</a>
                                                     </div>
-                                                    <div class="item-after"><a href="#" class="button active agregar" data-producto=${value.codigo}><i class="f7-icons" style="color: white; font-size: 13px;">trash_fill</i></a></div>
+                                                    <div class="item-after"><a href="#" class="button active eliminar" data-producto=${value.codigo}><i class="f7-icons" style="color: white; font-size: 13px;">trash_fill</i></a></div>
                                                 </div>
                                                  
                                             </li>
@@ -366,14 +370,23 @@ myApp.onPageInit('shoppingCard', function (page) {
 
     });
     $$('.less').on('click',function () {
-
+        let cantidad = parseInt($$("#stock"+($$(this).data('codigo') )).text()) ;
+        if(cantidad > 1){
+            cantidad -= 1;
+            $$("#stock"+($$(this).data('codigo') )).text(cantidad);
+            let codigoProducto = parseInt($$(this).data('codigo'));
+            let reult = objectProductosShopping.findIndex(x => x.codigo === codigoProducto)
+            objectProductosShopping[reult].cantidad = cantidad;
+        }
 
     });
     $$('.more').on('click',function () {
         let cantidad = parseInt($$("#stock"+($$(this).data('codigo') )).text()) ;
         cantidad += 1;
         $$("#stock"+($$(this).data('codigo') )).text(cantidad);
-        console.log($$(this).data('codigo'),'mas');
+        let codigoProducto = parseInt($$(this).data('codigo'));
+        let reult = objectProductosShopping.findIndex(x => x.codigo === codigoProducto)
+        objectProductosShopping[reult].cantidad = cantidad;
     });
     $$('.enviar').on('click',function () {
         myApp.modal({
@@ -396,24 +409,122 @@ myApp.onPageInit('shoppingCard', function (page) {
 
 
     });
+    $$('.eliminar').on('click',function () {
+        console.log('eliminar');
+
+        let codigoProducto = parseInt($$(this).data('producto'));
+        let reult = objectProductosShopping.findIndex(x => x.codigo === codigoProducto)
+        objectProductosShopping.splice(reult, 1)
+        console.log('codigo',codigoProducto);
+        $$(`#${codigoProducto}`).remove()
+    });
+
+
+
+})
+myApp.onPageInit('emailForm', function (page) {
+    // Do something here for "about" page
+    //myApp.alert('codigo para chopping');
+    $$('.sendMail').on('click',function () {
+        myApp.showPreloader('Enviando Correo');
+        let dataEmail = '';
+        let nombre = $$('#nombre').val();
+        let ciudad =  $$('#ciudad').val();
+        let observacion = $$('#observacion').val();
+        dataEmail+=`Se ha registrado un pedido \nCiudad:${ciudad} \nNombre:${nombre} \nObservación:${observacion}\n`;
+        $$.each(objectProductosShopping, function (key, value) {
+            dataEmail+=`Codigo: ${value.codigo},Descripcion:${value.descripcion},Costo: ${value.valor},Cantidad: ${value.cantidad} \n`;
+        });
+        $$.post('https://www.estrategicacomunicaciones.com/mobile/php/send_mail.php', {
+            'productos':dataEmail,
+            'correo':ciudad,
+        }, function(response) {
+            myApp.hidePreloader();
+            myApp.modal({
+                title: 'Se ha notificado el pedido',
+                text: `Se ha enviado un correo`,
+                buttons: [
+                    {
+                        text: 'Ok'
+
+                    }
+                ]
+            })
+        }, 'json');
+    })
+
 
 })
 
 // Option 2. Using one 'pageInit' event handler for all pages:
-$$(document).on('pageInit', function (e) {
+$$(document).on('pageInit', function (e,page) {
     // Get page data from event data
     var page = e.detail.page;
-
-    if (page.name === 'about') {
-        console.log('ingresa About');
+    if (page.name === 'index') {
+        //console.log('ingresa About');
         // Following code will be executed for page with data-page attribute equal to "about"
-        myApp.alert('Here comes About page');
+        $$.each(objectProductos, function (key, value) {
+            //console.log(key, value);
+            let productoCard = `<div class="card">
+                            <div class="card-content">
+                                <div class="card-content-inner">
+                                    <p style="color: black; font-size: 16px;">
+                                        Codigo: ${value.codigo}
+                                    </p>
+                                    ${value.descripcion}
+                                    <div class="list-block">
+                                        <br>
+                                        <ul>
+                                            <li class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title" style="color: black">Costo: ${value.valor}</div>
+                                                    <div class="item-after"><a href="#" class="button active agregar" data-producto=${value.codigo}>Agregar
+                                                        Producto</a></div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+
+            $$(".content-block2").append(productoCard);
+
+        });
+        $$('.agregar').on('click', function () {
+            let codigoProducto = parseInt($$(this).data('producto'));
+            myApp.modal({
+                title: 'Producto Agregado',
+                text: `Se ha agregado producto con el codigo:${$$(this).data('producto')}`,
+                buttons: [
+                    {
+                        text: 'Aceptar',
+                        onClick: function () {
+                            let reult = objectProductos.filter(x => x.codigo === codigoProducto)
+                            reult = reult[0]
+                            objectProductosShopping.push(
+                                {
+                                    id: reult.id,
+                                    codigo: reult.codigo,
+                                    descripcion: reult.descripcion,
+                                    valor: reult.valor,
+                                    cantidad: 1
+                                }
+                            );
+                        }
+
+                    }
+                ]
+            })
+
+        })
     }
     if (page.name === 'shoppingCard') {
         // Following code will be executed for page with data-page attribute equal to "about"
 
 
     }
+
 
 })
 

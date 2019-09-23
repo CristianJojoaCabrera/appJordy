@@ -10,9 +10,9 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-    <meta http-equiv="Content-Security-Policy"
+    <!--<meta http-equiv="Content-Security-Policy"
           content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-
+-->
     <!-- Required meta tags-->
     <meta charset="utf-8">
     <meta name="viewport"
@@ -21,7 +21,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
-
+    <meta http-equiv="Content-Security-Policy"
+          content=" img-src 'self' data:; default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'"/>
     <!-- Your app title -->
     <title>Productos</title>
 
@@ -35,22 +36,26 @@
     <link rel="stylesheet" href="css/styles.css">
 
     <style>
-        .card{
+        .card {
             border-radius: 11px;
             border: 0.5px solid #ff6900;
         }
+
         .button.active {
             background: #ff6900;
             color: #fff;
         }
+
         .button {
             border: 1px solid #ff6900;
         }
-        .navbar-inner{
+
+        .navbar-inner {
             background-color: #ff6900;
             color: white;
         }
-        .modal-button{
+
+        .modal-button {
             color: #ff6900;
         }
     </style>
@@ -85,7 +90,7 @@
                       Right link contains only icon - additional "icon-only" class
                       Additional "open-panel" class tells app to open panel when we click on this link
                     -->
-                    <a href="shoppingCard.html">  <i class="f7-icons" style="color: white">cart</i></a>
+                    <a href="shoppingCard.html"> <i class="f7-icons" style="color: white">cart</i></a>
                 </div>
             </div>
         </div>
@@ -98,8 +103,29 @@
 
                 </div>
                 <div class="page-content">
-                    <div class="content-block">
-                        <div class="content-block-title">Lista productos disponibles</div>
+                    <form data-search-list=".list-block-search" data-search-in=".item-title"
+                          class="searchbar searchbar-init">
+                        <div class="searchbar-input">
+                            <input type="search" placeholder="Buscar"><a href="#" class="searchbar-clear"></a>
+                        </div>
+                        <a href="#" class="searchbar-cancel" style="color: #ff6900">Cancelar</a>
+                    </form>
+
+                    <!-- Search Bar overlay -->
+                    <div class="searchbar-overlay"></div>
+
+
+                    <!-- This block will be displayed if nothing found -->
+                    <div class="content-block searchbar-not-found">
+                        <div class="content-block-inner">No hubo coincidencias</div>
+                    </div>
+
+                    <!-- This block will be displayed if anything found, and this list block is used a searbar target -->
+                    <div class="content-block-title">Lista productos disponibles</div>
+                    <div class="content-block content-block2 list-block list-block-search searchbar-found">
+                        <ul id="lista">
+                            <br>
+                        </ul>
                     </div>
                 </div>
             </div>
